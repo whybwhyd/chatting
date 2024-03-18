@@ -7,7 +7,7 @@ import { RiHome2Line } from 'react-icons/ri';
 import { LuPlus } from 'react-icons/lu';
 import { IoSearchOutline } from 'react-icons/io5';
 
-const ChatContents = () => {
+const ChatContent = () => {
   return (
     <div>
       {/* 헤더 */}
@@ -76,4 +76,4 @@ const ChatContents = () => {
   );
 };
 
-export default ChatContents;
+export default ChatContent;

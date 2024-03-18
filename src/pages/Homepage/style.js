@@ -6,13 +6,21 @@ export const HomeFrame = styled.div`
   flex-direction: column;
   justify-content: center;
   align-content: center;
-  align-items: center;
-  width: 375px;
+  // align-items: center;
   height: 100vh;
 `;
+
+export const HomeChatFrame = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  /flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  width: 375px;
+`;
 export const HomeHeaderWrapper = styled.div`
-  position: fixed;
-  top: 10px;
+  padding-top: 20px;
   width: 340px;
   height: 60px;
 `;
@@ -53,12 +61,19 @@ export const kakaoImgDiv = styled.div`
   align-items: center;
   border-radius: 19px;
   background-color: yellow;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
+`;
+export const ImgDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 19px;
 `;
 export const kakaoChatFrame = styled.div`
   display: flex;
   flex-direction: column;
+  width: 240px;
   height: 46px;
   gap: 5px;
 `;
@@ -90,9 +105,15 @@ export const ChatTextTitle = styled.p`
 `;
 export const BodyFrame = styled.div`
   display: flex;
+  flex-direction: column;
   height: 560px;
-  gap: 20px;
-  margin-top: 20px;
+`;
+export const BodyItemFrame = styled.div`
+  display: flex;
+  align-items: center;
+  height: 65px;
+  gap: 15px;
+  padding: 3px;
 `;
 export const HomeFooterFrame = styled.div`
   background-color: #f9f9fa;
@@ -104,8 +125,12 @@ export const HomeFooterFrame = styled.div`
   gap: 60px;
 `;
 export const HomeFooterWrapper = styled.div`
-  position: fixed;
-  bottom: 0px;
   width: 375px;
   height: 45px;
+  padding-bottom: 20px;
+`;
+export const Img = styled.img`
+  width: 45px;
+  height: 45px;
+  border-radius: 19px;
 `;
