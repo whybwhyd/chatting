@@ -104,11 +104,11 @@ export const Img = styled.img`
 `;
 export const ImgDiv = styled.div`
   border-radius: 19px;
+  padding-right: 5px;
 `;
 export const TalkBubbleFrameW = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 5px;
 `;
 export const ChatTimeFrame = styled.div`
   display: flex;

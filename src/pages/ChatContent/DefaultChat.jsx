@@ -1,6 +1,7 @@
 import React from 'react';
 import * as St from './style';
 import { Link } from 'react-router-dom';
+import { PdfDownload } from '../../component/PdfDownload';
 
 const DefaultChat = ({ doc }) => {
   return (
@@ -48,7 +49,7 @@ const DefaultChat = ({ doc }) => {
                     </div>
                     <div>이렇게 시작된 광석씨네 이야기</div>
                   </St.chatText>
-                  <Link>매거진 다운로드 링크</Link>
+                  <div onClick={PdfDownload}>매거진 다운로드 링크</div>
                   <St.chatTextbtnFrame>
                     <St.Btn>
                       <a
