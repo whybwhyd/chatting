@@ -6,14 +6,12 @@ export const HomeFrame = styled.div`
   flex-direction: column;
   justify-content: center;
   align-content: center;
-  // align-items: center;
   height: 100vh;
 `;
 
 export const HomeChatFrame = styled.div`
   display: flex;
   flex-wrap: wrap;
-  /flex-direction: column;
   justify-content: center;
   align-content: center;
   align-items: center;
@@ -24,14 +22,14 @@ export const HomeHeaderWrapper = styled.div`
   width: 340px;
   height: 60px;
 `;
-export const HeaderText = styled.div`
-  font-size: 18pt;
-  font-weight: semi-bold;
-`;
 export const HomeHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+export const HeaderText = styled.div`
+  font-size: 18pt;
+  font-weight: semi-bold;
 `;
 export const HeaderIconGroup = styled.div`
   display: flex;

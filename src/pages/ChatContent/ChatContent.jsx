@@ -1,4 +1,5 @@
-import React from 'react';
+import * as St from './style';
+import React, { useEffect, useRef, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { HiBadgeCheck } from 'react-icons/hi';
 import { GoTriangleDown } from 'react-icons/go';
@@ -6,73 +7,164 @@ import { IoIosMenu } from 'react-icons/io';
 import { RiHome2Line } from 'react-icons/ri';
 import { LuPlus } from 'react-icons/lu';
 import { IoSearchOutline } from 'react-icons/io5';
+import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import DefaultChat from './DefaultChat';
 
 const ChatContent = () => {
+  const [chatTotal, SetChatTotal] = useState([]);
+  const [chat, SetChat] = useState('');
+  const [showIntro, SetShowIntro] = useState(false);
+  const { state } = useLocation();
+  const { doc } = state;
+  const chatContainerRef = useRef(null);
+  const navigate = useNavigate();
+
+  const onChange = (e) => {
+    SetChat(e.target.value);
+  };
+
+  const handleInputKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      if (chat.length > 0) {
+        SetChatTotal([
+          ...chatTotal,
+          { type: 'yellow', chat: chat, createdDt: new Date().toTimeString() },
+        ]);
+      } else {
+        alert('내용을 입력해주세요');
+      }
+
+      const keys = Object.keys(doc.keywordMenu);
+      keys.forEach((key) => {
+        if (key === chat) {
+          SetChatTotal([
+            ...chatTotal,
+            {
+              type: 'yellow',
+              chat: chat,
+              createdDt: new Date().toTimeString(),
+            },
+            {
+              type: 'white',
+              chat: doc.keywordMenu[chat],
+              createdDt: new Date().toTimeString(),
+            },
+          ]);
+        }
+      });
+      SetChat('');
+    }
+  };
+
+  const showIntroDelay = () => {
+    setTimeout(() => {
+      SetShowIntro(true);
+    }, 1500);
+  };
+
+  useEffect(() => {
+    showIntroDelay();
+  }, []);
+
+  useEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }, [chatTotal]);
+  const beforePageHandler = () => {
+    navigate('/');
+  };
   return (
-    <div>
-      {/* 헤더 */}
-      <div>
-        <IoIosArrowBack />
-        <div>
-          <div>
-            <p>광화문석갈비</p>
-            <HiBadgeCheck />
-          </div>
-          <div>
-            <p>02-539-0107</p>
-            <GoTriangleDown />
-          </div>
-        </div>
-        <div>
-          <IoSearchOutline />
-          <IoIosMenu />
-        </div>
-      </div>
-      {/* contents */}
-      <div>
-        <div>
-          {/* fixed로 고정하기 */}
-          <RiHome2Line />
-        </div>
-        {/* 검색어에 따라 나오는 카드 */}
-        <div>
-          <img />
-          <div>
-            {/* card */}
-            <p>
-              좋은 고기를 태우지 않고 먹을 수 없을까?
-              <br /> 고기를 먹을 때 옷에 냄새가 안 밸 수 없을까? <br />
-              이렇게 시작된 광석씨네 이야기
-            </p>
-            <div>
-              <button>코엑스점</button>
-              <button>D타워점</button>
+    <St.ChatTotalFrame>
+      <St.ChatFrame>
+        {/* 헤더 */}
+        <St.ChatHeaderWrapper>
+          <St.ChatHeader>
+            <div onClick={beforePageHandler}>
+              <IoIosArrowBack />
             </div>
-          </div>
-          <p>오후 12:12</p>
+
+            <St.ChatHeaderStore>
+              <St.ItemsFlexDiv>
+                <div>{doc.storeName}</div>
+                <HiBadgeCheck />
+              </St.ItemsFlexDiv>
+              <St.ItemsFlexDiv>
+                <div>02-539-0107</div>
+                <GoTriangleDown />
+              </St.ItemsFlexDiv>
+            </St.ChatHeaderStore>
+
+            <St.ItemsFlexDiv>
+              <IoSearchOutline />
+              <IoIosMenu />
+            </St.ItemsFlexDiv>
+          </St.ChatHeader>
+        </St.ChatHeaderWrapper>
+
+        {/* contents */}
+        <div style={{ overflowY: 'auto', height: '560px' }}>
+          <St.BodyFrame ref={chatContainerRef}>
+            <St.HomeIconDiv>
+              <RiHome2Line />
+            </St.HomeIconDiv>
+            {/* 검색어에 따라 나오는 카드 */}
+            <div>
+              {showIntro && (
+                <>
+                  <DefaultChat doc={doc} />
+                </>
+              )}
+            </div>
+            {chatTotal.map((item, index) => (
+              <div key={index}>
+                {item.type === 'yellow' ? (
+                  <St.TalkBubbleFrameY>
+                    <div>{item.createdDt.slice(0, 5)}</div>
+                    <St.MyChat>{item.chat}</St.MyChat>
+                  </St.TalkBubbleFrameY>
+                ) : (
+                  <St.TalkBubbleFrameW>
+                    <St.ImgDiv>
+                      <St.Img alt="사진" src={doc.storeProfileImg} />
+                    </St.ImgDiv>
+                    <St.TalkBubbleContentFrame>
+                      <div>{doc.storeName}</div>
+                      <St.ChatTimeFrame>
+                        <St.StoreChat>
+                          <div>{item.chat}</div>
+                        </St.StoreChat>
+                        <div>{item.createdDt.slice(0, 5)}</div>
+                      </St.ChatTimeFrame>
+                    </St.TalkBubbleContentFrame>
+                  </St.TalkBubbleFrameW>
+                )}
+              </div>
+            ))}
+          </St.BodyFrame>
         </div>
-        <div>
-          <div>
-            {/* 노란 말풍선 */}
-            <p>메뉴를 보여주세요</p>
-          </div>
-          <p>오후 12:12</p>
-        </div>
-      </div>
-      <div>
+
         {/* 푸터 */}
-        <div>
-          <div>
-            전체
-            <GoTriangleDown />
-          </div>
-          <div>
-            <LuPlus />
-            <input placeholder="챗봇에게 메세지 보내기" />
-          </div>
-        </div>
-      </div>
-    </div>
+        <St.ChatFooterWrapper>
+          <St.ChatFooterFrame>
+            <St.SelectDiv>
+              전체
+              <GoTriangleDown />
+            </St.SelectDiv>
+            <St.ChatInputDiv>
+              <LuPlus size="28px" color="#7d8088" />
+              <St.ChatInput
+                id="chat"
+                value={chat}
+                onChange={onChange}
+                placeholder="챗봇에게 메세지 보내기"
+                onKeyPress={handleInputKeyPress}
+              />
+            </St.ChatInputDiv>
+          </St.ChatFooterFrame>
+        </St.ChatFooterWrapper>
+      </St.ChatFrame>
+    </St.ChatTotalFrame>
   );
 };
 

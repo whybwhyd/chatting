@@ -16,6 +16,7 @@ const CreateChat = () => {
     storeProductImg: '',
     storeProductDescription: '',
     color: '',
+    keywordMenu: { 점심메뉴: '', 특선메뉴: '', 디너메뉴: '' },
   };
   const [form, setForm] = useState(initialValue);
   const [step, setStep] = useState(0);
@@ -26,17 +27,36 @@ const CreateChat = () => {
     storeProductImg,
     storeProductDescription,
     color,
+    keywordMenu,
   } = form;
   const onchange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
   const nextBtnHandler = () => {
-    setStep(1);
+    if (step === 0) {
+      setStep(1);
+    } else if (step === 1) {
+      setStep(2);
+    }
   };
   const beforeBtnHandler = () => {
-    setStep(0);
+    if (step === 2) {
+      setStep(1);
+    } else {
+      setStep(0);
+    }
   };
+  const menuOnChange = (key, value) => {
+    setForm((prevState) => ({
+      ...prevState,
+      keywordMenu: {
+        ...prevState.keywordMenu,
+        [key]: value,
+      },
+    }));
+  };
+
   const submitBtnHandler = () => {
     addData(
       storeName,
@@ -45,6 +65,7 @@ const CreateChat = () => {
       storeProductImg,
       storeProductDescription,
       color,
+      keywordMenu,
     );
     setForm(initialValue);
 
@@ -60,7 +81,7 @@ const CreateChat = () => {
         animate={{ translateX: `${step * -100}vw` }}
         transition={{ ease: 'easeInOut' }}
         style={{
-          display: step <= 0 ? 'grid' : 'none',
+          display: step === 0 ? 'grid' : 'none',
           gap: '5px',
           fontWeight: 'bold',
         }}
@@ -87,15 +108,12 @@ const CreateChat = () => {
           value={storeDescription}
           onChange={onchange}
         />
-        <button type="button" onClick={nextBtnHandler}>
-          다음 페이지
-        </button>
       </motion.div>
       <motion.div
         animate={{ translateX: `${(1 - step) * 100}vw` }}
         style={{
           translateX: `${(1 - step) * 100}vw`,
-          display: step > 0 ? 'grid' : 'none',
+          display: step === 1 ? 'grid' : 'none',
           gap: '5px',
         }}
         transition={{
@@ -123,12 +141,30 @@ const CreateChat = () => {
           value={storeProductDescription}
           onChange={onchange}
         />
-        <button type="button" onClick={beforeBtnHandler}>
-          이전 페이지
-        </button>
-        <button type="submit" onClick={submitBtnHandler}>
-          페이지 만들기
-        </button>
+      </motion.div>
+      <motion.div
+        animate={{ translateX: `${(2 - step) * 100}vw` }}
+        style={{
+          translateX: `${(2 - step) * 100}vw`,
+          display: step === 2 ? 'grid' : 'none',
+          gap: '5px',
+        }}
+        transition={{
+          ease: 'easeInOut',
+        }}
+      >
+        {Object.keys(keywordMenu).map((key) => (
+          <div key={key}>
+            <label htmlFor={key}>{key}</label>
+            <input
+              type="text"
+              id={key}
+              value={keywordMenu[key]}
+              onChange={(e) => menuOnChange(key, e.target.value)}
+            />
+          </div>
+        ))}
+
         <ToastContainer
           position="top-center"
           autoClose={1800}
@@ -142,6 +178,27 @@ const CreateChat = () => {
           theme="light"
         />
       </motion.div>
+      <button
+        type="button"
+        style={{ visibility: step === 0 ? 'hidden' : 'visible' }}
+        onClick={beforeBtnHandler}
+      >
+        이전 페이지
+      </button>
+      <button
+        type="button"
+        style={{ visibility: step === 2 ? 'hidden' : 'visible' }}
+        onClick={nextBtnHandler}
+      >
+        다음 페이지
+      </button>
+      <button
+        type="submit"
+        style={{ visibility: step === 2 ? 'visible' : 'hidden' }}
+        onClick={submitBtnHandler}
+      >
+        페이지 만들기
+      </button>
     </St.Form>
   );
 };

@@ -1,10 +1,9 @@
 import {
   doc,
-  // getDoc,
   setDoc,
   collection,
   getDocs,
-  query,
+  Timestamp,
 } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import { v4 as uuid } from 'uuid';
@@ -32,16 +31,21 @@ export const addData = async (
   storeProfileImg,
   storeProductImg,
   storeProductDescription,
+  color,
+  keywordMenu,
 ) => {
   const contentId = uuid();
   const addDocRef = doc(db, 'chatList', contentId);
   const data = {
     id: contentId,
-    name: storeName,
-    profileImg: storeProfileImg,
-    description: storeDescription,
-    ProductImg: storeProductImg,
-    ProductDescription: storeProductDescription,
+    storeName,
+    storeDescription,
+    storeProfileImg,
+    storeProductImg,
+    storeProductDescription,
+    color,
+    keywordMenu,
+    createdDt: new Date().toString(),
   };
   await setDoc(addDocRef, data);
 };

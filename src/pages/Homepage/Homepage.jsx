@@ -9,20 +9,19 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import { BsPerson } from 'react-icons/bs';
 import { HiChatBubbleOvalLeft } from 'react-icons/hi2';
 import { PiDotsThreeOutlineThin } from 'react-icons/pi';
-// import { useNavigate } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import { getPosts } from '../../firebase/Database';
 import CreateChat from '../../component/CreateChat/CreateChat';
 
 const HomePage = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { data } = useQuery('chatList', getPosts);
   const { centerMount } = useModal();
 
   const plusChatHandler = () => {
     centerMount('createChat', <CreateChat />);
   };
-  const chatItemHandler = async () => {};
   return (
     <St.HomeFrame>
       <St.HomeChatFrame>
@@ -49,7 +48,7 @@ const HomePage = () => {
             <St.kakaoImgDiv>
               <RiKakaoTalkFill size={'38px'} />
             </St.kakaoImgDiv>
-            <St.kakaoChatFrame onClick={chatItemHandler}>
+            <St.kakaoChatFrame onClick={() => navigate('/defaultChat')}>
               <St.ChatTextTitle>KakaoTalk</St.ChatTextTitle>
               <St.Text>Please check My Kakao Account Info</St.Text>
             </St.kakaoChatFrame>
@@ -67,12 +66,18 @@ const HomePage = () => {
                     backgroundColor: doc.color ? doc.color : 'skyblue',
                   }}
                 >
-                  <St.Img alt="기본 이미지" src={doc.ProductImg} />
+                  <St.Img alt="기본 이미지" src={doc.storeProductImg} />
                 </St.ImgDiv>
-                <St.kakaoChatFrame onClick={chatItemHandler}>
-                  <St.ChatTextTitle>{doc.name}</St.ChatTextTitle>
-                  <St.Text>{doc.ProductDescription}</St.Text>
-                </St.kakaoChatFrame>
+                <Link
+                  to={`/${doc.id}`}
+                  state={{ doc }}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                >
+                  <St.kakaoChatFrame>
+                    <St.ChatTextTitle>{doc.storeName}</St.ChatTextTitle>
+                    <St.Text>{doc.storeProductDescription}</St.Text>
+                  </St.kakaoChatFrame>
+                </Link>
                 <St.AlarmFrame>
                   <St.Text>21:22</St.Text>
                   <St.TextAlarmdiv>1</St.TextAlarmdiv>
